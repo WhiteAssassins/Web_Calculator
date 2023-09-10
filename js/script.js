@@ -1,8 +1,6 @@
-// Obtener el elemento de visualización
 const display = document.getElementById('display');
-
-// Historial de cálculos
 const calculationHistory = [];
+let memory = 0;
 
 // Función para agregar un cálculo al historial
 function addToHistory(expression, result) {
@@ -172,3 +170,32 @@ historyList.addEventListener('click', function (event) {
         fillCalculatorField(expression);
     }
 });
+
+
+
+
+function addToMemory() {
+    const displayValue = parseFloat(document.getElementById('display').value);
+    memory += displayValue;
+    updateMemoryDisplay();
+}
+
+function subtractFromMemory() {
+    const displayValue = parseFloat(document.getElementById('display').value);
+    memory -= displayValue;
+    updateMemoryDisplay();
+}
+
+function recallMemory() {
+    document.getElementById('display').value = memory;
+}
+
+function clearMemory() {
+    memory = 0;
+    updateMemoryDisplay();
+}
+
+function updateMemoryDisplay() {
+    document.getElementById('memoryValue').innerText = memory;
+}
+

@@ -15,6 +15,10 @@
         <h1 class="text-4xl mb-6">Calculadora</h1>
         <input id="display" class="w-full h-16 px-4 mb-4 text-2xl result-input rounded-lg animate__animated animate__bounceIn" type="text" readonly>
         <div class="grid grid-cols-4 gap-4 mx-auto mt-8">
+        <button class="btn operator-btn" id="memoryAddButton" onclick="addToMemory()">M+</button>
+<button class="btn operator-btn" id="memorySubtractButton" onclick="subtractFromMemory()">M-</button>
+<button class="btn operator-btn" id="memoryRecallButton" onclick="recallMemory()">MR</button>
+<button class="btn operator-btn" id="memoryClearButton" onclick="clearMemory()">MC</button>
     <!-- Fila 1 -->
     <button class="btn" id="clearButton" onclick="clearDisplay()">C</button>
     <button class="btn" id="backspaceButton" onclick="backspace()">←</button>
@@ -48,8 +52,12 @@
             <ul id="historyList">
         <!-- Los cálculos anteriores se mostrarán aquí -->
     </ul>
+   
 </div>
-
+<div id="memoryDisplay" class="mx-auto mt-4">
+    <h2 class="text-lg font-semibold mb-2">Memoria</h2>
+    <p id="memoryValue">0</p>
+</div>
         </div>
     </div>
     <script src="js/script.js"></script>
