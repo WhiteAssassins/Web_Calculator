@@ -157,32 +157,18 @@ function isValidInput(input) {
     return parenthesesCount === 0 && regex.test(input);
 }
 
-function applyDefaultStyle() {
-    // Aplicar estilo predeterminado (eliminar clases de estilo alternativo)
-    document.body.classList.remove('cyberpunk-theme');
+
+function fillCalculatorField(expression) {
+    const display = document.getElementById('display');
+    display.value = expression;
 }
 
-function applyCyberpunkStyle() {
-    // Aplicar estilo cyberpunk
-    document.body.classList.add('cyberpunk-theme');
-}
-
-// Función para alternar el despliegue del botón
-function toggleStyleMenu() {
-    const styleToggleContent = document.getElementById('styleToggleContent');
-    styleToggleContent.classList.toggle('active');
-}
-
-// Agregar un evento de clic al botón para alternar el despliegue
-const styleToggleButton = document.getElementById('styleToggleButton');
-styleToggleButton.addEventListener('click', toggleStyleMenu);
-
-function toggleStyle() {
-    const body = document.body;
-    body.classList.toggle('cyberpunk-theme'); // Agrega o elimina la clase del estilo cyberpunk
-}
-styleToggleButton.addEventListener('click', toggleStyle);
-
-
-
-
+const historyList = document.getElementById('historyList');
+historyList.addEventListener('click', function (event) {
+    // Verifica si el clic se realizó en un elemento de la lista (li)
+    if (event.target && event.target.nodeName === 'LI') {
+        // Obtiene el texto del elemento de la lista y lo utiliza para llenar el campo de la calculadora
+        const expression = event.target.innerText.split('=')[0].trim();
+        fillCalculatorField(expression);
+    }
+});
