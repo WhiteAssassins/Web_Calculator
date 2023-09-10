@@ -1,0 +1,14 @@
+{
+    "nombre": "Calculadora",
+    "descripcion": "Una calculadora web simple creada con PHP, CSS y JavaScript.",
+    "fecha_creacion": "2023-09-10",
+    "version": "1.0",
+    "fecha_ultima_actualizacion": "2023-09-10",
+    "herramientas_utilizadas": ["PHP", "CSS", "JavaScript"],
+    "creador": "WhiteAssassins",
+    "lenguaje": "PHP",
+    "categorias": ["Herramientas", "Calculadoras"],
+    "etiquetas": ["Web", "Calculadora", "PHP", "JavaScript"],
+    "licencia": "Licencia MIT",
+    "estado": "Activo"
+}
