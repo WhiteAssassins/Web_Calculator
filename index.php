@@ -7,24 +7,7 @@
     <!-- Incluye Tailwind CSS desde CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
-    <link href="cyberpunk-theme.css" rel="stylesheet" id="styleSheet">
-    <style>
-        /* Estilo personalizado para la tarjeta y la imagen de fondo */
-        .background-image {
-            background-image: url('night.avif');
-            background-size: cover;
-            background-position: center center;
-        }
-
-        .overlay {
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-
-        .result-input {
-            background-color: rgba(255, 255, 255, 0.8);
-            border: 2px solid #ccc;
-        }
-    </style>
+    <link href="main.css" rel="stylesheet" id="styleSheet">
 </head>
 <body class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white">
 <div class="min-h-screen flex items-center justify-center background-image">

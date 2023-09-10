@@ -1,0 +1,15 @@
+        /* Estilo personalizado para la tarjeta y la imagen de fondo */
+        .background-image {
+            background-image: url('night.avif');
+            background-size: cover;
+            background-position: center center;
+        }
+
+        .overlay {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .result-input {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 2px solid #ccc;
+        }
