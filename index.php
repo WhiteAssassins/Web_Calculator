@@ -24,6 +24,11 @@
     <button class="btn" id="backspaceButton" onclick="backspace()">←</button>
     <button class="btn" id="divideButton" onclick="appendToDisplay('/')">/</button>
     <button class="btn" id="multiplyButton" onclick="appendToDisplay('*')">*</button>
+    <button class="btn operator-btn" id="openParenthesisButton" onclick="appendToDisplay('(')">(</button>
+<button class="btn operator-btn" id="closeParenthesisButton" onclick="appendToDisplay(')')">)</button>
+<button class="btn operator-btn" id="powerButton" onclick="appendToDisplay('^')">^</button>
+<button class="btn operator-btn" id="sqrtButton" onclick="appendToDisplay('sqrt(')">√</button>
+<button class="btn" id="cbrtButton" onclick="appendToDisplay('cbrt(')">∛</button>
     
     <!-- Fila 2 -->
     <button class="btn" id="num7Button" onclick="appendToDisplay('7')">7</button>
@@ -60,6 +65,8 @@
 </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.1.0/math.min.js"></script>
+
     <script src="js/script.js"></script>
 </body>
 </html>

@@ -15,7 +15,21 @@ function addToHistory(expression, result) {
 
 // Función para agregar contenido al campo de visualización
 function appendToDisplay(value) {
-    display.value += value;
+    const display = document.getElementById('display');
+    
+    // Agrega los caracteres correspondientes según el botón presionado
+    if (value === '^') {
+        display.value += '^';
+    } else if (value === 'sqrt(') {
+        display.value += 'sqrt(';
+    } else {
+        display.value += value;
+    }
+
+    // Añade una clase de animación cuando se escribe un dígito u operador
+    display.classList.remove('animate__fadeOut');
+    display.classList.add('animate__fadeIn');
+    
 }
 
 // Función para limpiar el campo de visualización con animaciones
@@ -27,10 +41,6 @@ function clearDisplay() {
         display.value = '';
         display.classList.remove('animate__fadeOut');
         display.classList.add('animate__shakeX');
-
-        setTimeout(() => {
-            display.classList.remove('animate__shakeX');
-        }, 1000);
     }, 1000);
 }
 
@@ -48,8 +58,10 @@ function animateDisplay(value) {
 
 // Función para calcular la expresión matemática
 function calculate() {
-    const expression = display.value;
+    const display = document.getElementById('display');
+    let expression = display.value;
 
+    // Verificar si la entrada es válida antes de calcular
     if (!isValidInput(expression)) {
         display.value = 'Entrada inválida';
         return;
@@ -57,19 +69,32 @@ function calculate() {
 
     if (expression !== '') {
         try {
-            const expressionWithCos = expression.replace(/cos\(([^)]+)\)/g, function(match, degrees) {
-                const radians = (parseFloat(degrees) * Math.PI) / 180;
-                return Math.cos(radians);
+            // Reemplazar 'sqrt' con la llamada real a la función Math.sqrt
+            expression = expression.replace(/sqrt\(([^)]+)\)/g, function(match, number) {
+                return Math.sqrt(parseFloat(number));
             });
 
-            const result = eval(expressionWithCos);
+            // Reemplazar 'cbrt' con la llamada real a la función Math.cbrt
+            expression = expression.replace(/cbrt\(([^)]+)\)/g, function(match, number) {
+                return Math.cbrt(parseFloat(number));
+            });
 
+            // Reemplazar '^' con '**' para cálculos de potencia
+            expression = expression.replace(/\^/g, '**');
+
+            // Evaluar la expresión matemática utilizando eval()
+            const result = eval(expression);
+
+            // Agregar una clase de animación al mostrar el resultado
             display.classList.remove('animate__fadeIn');
             display.classList.add('animate__bounceIn');
 
             setTimeout(() => {
+                // Mostrar el resultado y eliminar la clase de animación
                 display.value = result;
                 display.classList.remove('animate__bounceIn');
+
+                // Agregar el cálculo al historial
                 addToHistory(expression, result);
             }, 300);
         } catch (error) {
@@ -77,6 +102,14 @@ function calculate() {
         }
     }
 }
+
+
+
+
+
+
+
+
 
 // Función para eliminar el último carácter del campo de visualización
 function backspace() {
@@ -130,15 +163,19 @@ document.addEventListener('keydown', function(event) {
 
 // Función para validar la entrada
 function isValidInput(input) {
-    const regex = /^[\d+\-*/(). ]*$/;
-    const validOperators = ['+', '-', '*', '/'];
+    // Utiliza una expresión regular para validar la entrada.
+    // Esta expresión regular permite números, operadores (+, -, *, /, ^), paréntesis y llamadas a sqrt() y cbrt() sin paréntesis de cierre.
+    const regex = /^[\d+\-*/().^]*(sqrt\(\d+\)|sqrt\(\d+\.\d+\)|cbrt\(\d+\)|cbrt\(\d+\.\d+\)|\d+|\d+\.\d+)[\d+\-*/().^]*$/;
+    const validOperators = ['+', '-', '*', '/', '^'];
 
+    // Verifica que no haya dos operadores juntos en la entrada
     for (let i = 0; i < input.length - 1; i++) {
         if (validOperators.includes(input[i]) && validOperators.includes(input[i + 1])) {
             return false;
         }
     }
 
+    // Verifica que los paréntesis estén balanceados
     let parenthesesCount = 0;
     for (let i = 0; i < input.length; i++) {
         if (input[i] === '(') {
@@ -152,8 +189,11 @@ function isValidInput(input) {
         }
     }
 
+    // Verifica si los paréntesis están balanceados al final
     return parenthesesCount === 0 && regex.test(input);
 }
+
+
 
 
 function fillCalculatorField(expression) {
