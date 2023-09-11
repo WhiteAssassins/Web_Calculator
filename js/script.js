@@ -1,5 +1,7 @@
 const display = document.getElementById('display');
 const calculationHistory = [];
+const angleUnitRadios = document.querySelectorAll('input[name="angle-unit"]');
+let selectedAngleUnit = "radians"; // Valor predeterminado
 let memory = 0;
 
 // Función para agregar un cálculo al historial
@@ -57,6 +59,7 @@ function animateDisplay(value) {
 }
 
 // Función para calcular la expresión matemática
+// Función para calcular la expresión matemática
 function calculate() {
     const display = document.getElementById('display');
     let expression = display.value;
@@ -79,11 +82,38 @@ function calculate() {
                 return Math.cbrt(parseFloat(number));
             });
 
+            if (selectedAngleUnit === "degrees") {
+                expression = expression.replace(/sin\(([^)]+)\)/g, function(match, number) {
+                    return Math.sin((parseFloat(number) * Math.PI) / 180);
+                });
+
+                expression = expression.replace(/cos\(([^)]+)\)/g, function(match, number) {
+                    return Math.cos((parseFloat(number) * Math.PI) / 180);
+                });
+
+                expression = expression.replace(/tan\(([^)]+)\)/g, function(match, number) {
+                    return Math.tan((parseFloat(number) * Math.PI) / 180);
+                });
+            } else {
+                expression = expression.replace(/sin\(([^)]+)\)/g, function(match, number) {
+                    return Math.sin(parseFloat(number));
+                });
+
+                expression = expression.replace(/cos\(([^)]+)\)/g, function(match, number) {
+                    return Math.cos(parseFloat(number));
+                });
+
+                expression = expression.replace(/tan\(([^)]+)\)/g, function(match, number) {
+                    return Math.tan(parseFloat(number));
+                });
+            }
+
             // Reemplazar '^' con '**' para cálculos de potencia
             expression = expression.replace(/\^/g, '**');
 
-            // Evaluar la expresión matemática utilizando eval()
-            const result = eval(expression);
+            // Evaluar la expresión matemática utilizando math.js
+            const mathResult = math.evaluate(expression);
+            const result = parseFloat(mathResult);
 
             // Agregar una clase de animación al mostrar el resultado
             display.classList.remove('animate__fadeIn');
@@ -102,6 +132,7 @@ function calculate() {
         }
     }
 }
+
 
 
 
@@ -165,7 +196,7 @@ document.addEventListener('keydown', function(event) {
 function isValidInput(input) {
     // Utiliza una expresión regular para validar la entrada.
     // Esta expresión regular permite números, operadores (+, -, *, /, ^), paréntesis y llamadas a sqrt() y cbrt() sin paréntesis de cierre.
-    const regex = /^[\d+\-*/().^]*(sqrt\(\d+\)|sqrt\(\d+\.\d+\)|cbrt\(\d+\)|cbrt\(\d+\.\d+\)|\d+|\d+\.\d+)[\d+\-*/().^]*$/;
+    const regex = /^[\d+\-*/().^]*(sqrt\(\d+\)|sqrt\(\d+\.\d+\)|cbrt\(\d+\)|cbrt\(\d+\.\d+\)|\d+|\d+\.\d+|sin\(|cos\(|tan\()[\d+\-*/().^sct0-9 ]*$/;
     const validOperators = ['+', '-', '*', '/', '^'];
 
     // Verifica que no haya dos operadores juntos en la entrada
@@ -239,3 +270,39 @@ function updateMemoryDisplay() {
     document.getElementById('memoryValue').innerText = memory;
 }
 
+angleUnitRadios.forEach(function(radio) {
+    radio.addEventListener('change', function() {
+        selectedAngleUnit = this.value;
+    });
+});
+
+function calculateTrigonometricFunction() {
+    const display = document.getElementById('display');
+    let expression = display.value;
+
+    // Verificar si la entrada es válida antes de calcular
+    if (!isValidInput(expression)) {
+        display.value = 'Entrada inválida';
+        return;
+    }
+
+    if (expression !== '') {
+        try {
+            // Reemplazar las funciones trigonométricas según la unidad seleccionada
+            if (selectedAngleUnit === "radians") {
+                expression = expression.replace(/sin\(/g, 'Math.sin(');
+                expression = expression.replace(/cos\(/g, 'Math.cos(');
+                expression = expression.replace(/tan\(/g, 'Math.tan(');
+            } else if (selectedAngleUnit === "degrees") {
+                expression = expression.replace(/sin\(/g, 'Math.sin(Math.PI / 180 * ');
+                expression = expression.replace(/cos\(/g, 'Math.cos(Math.PI / 180 * ');
+                expression = expression.replace(/tan\(/g, 'Math.tan(Math.PI / 180 * ');
+            }
+
+            // Resto del código para evaluar la expresión y mostrar el resultado
+            // ...
+        } catch (error) {
+            display.value = 'Error';
+        }
+    }
+}
